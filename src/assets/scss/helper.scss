@@ -1,0 +1,16 @@
+@charset "utf-8";
+.container {
+  max-width: 1200px;
+}
+.mx {
+  &-auto {
+    margin: {
+      left: auto;
+      right: auto;
+    };
+  }
+}
+
+
+
+
