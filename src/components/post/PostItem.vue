@@ -1,5 +1,3 @@
-/* eslint-disable func-names */
-/* eslint-disable vuejs-accessibility/label-has-for */
 <template>
   <li class="postItem">
     <div class="postItem__head">
@@ -68,7 +66,7 @@
         id="cancel"
         class="btn btn-cancel"
         value="取消"
-        @click="isModifying = false"
+        @click="clickCancel"
       />
     </div>
   </li>
@@ -97,6 +95,10 @@ export default {
     clickConfirm() {
       this.isModifying = false;
       this.$emit('update', this.obj);
+    },
+    clickCancel() {
+      this.obj = this.parentData;
+      this.isModifying = false;
     },
   },
   watch: {

@@ -37,7 +37,7 @@ export default {
       }
     },
     updateKeyWord(val) {
-      this.keyWord = val;
+      setTimeout(() => { this.keyWord = val; }, 3000);
     },
     setTimeStr() {
       const timeStr = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
@@ -48,11 +48,10 @@ export default {
         author: 'aaaaaa',
         title: 'This is title',
         content: '點選以修改內容',
-        id: this.data.length + 1,
         updateTime: this.setTimeStr(),
       };
-      await this.$http.post('http://localhost:3000/posts', config);
-      this.data.push(config);
+      const res = await this.$http.post('http://localhost:3000/posts', config);
+      this.data.push(res.data);
     },
     async deleteData(val) {
       await this.$http.delete(`http://localhost:3000/posts/${val}`);
@@ -75,8 +74,8 @@ export default {
         data.updateTime = this.setTimeStr();
       }
       try {
-        await this.$http.patch(url, data);
-        this.getData();
+        const res = await this.$http.patch(url, data);
+        this.$set(this.data, id - 1, res.data);
       } catch (e) {
         console.log(e.response);
       }
