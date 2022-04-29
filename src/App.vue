@@ -40,7 +40,7 @@ export default {
       this.keyWord = val;
     },
     setTimeStr() {
-      const timeStr = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}${'\t'}${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
+      const timeStr = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
       return timeStr;
     },
     async postItem() {
