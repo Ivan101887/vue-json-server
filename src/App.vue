@@ -2,7 +2,7 @@
 <template>
   <div id="app">
     <TheHeader @update="updateKeyWord" @add="postItem" />
-    <Post :parent-data="filterData" @delete="deleteData" @update="patchData" />
+    <Post :parent-data="data" @delete="deleteData" @update="patchData" />
   </div>
 </template>
 
@@ -22,17 +22,15 @@ export default {
   created() {
     this.getData();
   },
-  computed: {
-    filterData() {
-      return this.data.filter((item) => item.author.includes(this.keyWord)
-        || item.title.includes(this.keyWord)
-        || item.content.includes(this.keyWord));
+  watch: {
+    keyWord() {
+      this.getData();
     },
   },
   methods: {
     async getData() {
       try {
-        const res = await this.$http.get('http://localhost:3000/posts');
+        const res = await this.$http.get(`http://localhost:3000/posts${this.keyWord ? `?q=${this.keyWord}` : ''}`);
         this.data = res.data;
       } catch (e) {
         console.log(e);
@@ -50,27 +48,28 @@ export default {
         author: 'aaaaaa',
         title: 'This is title',
         content: '點選以修改內容',
+        id: this.data.length + 1,
         updateTime: this.setTimeStr(),
       };
       await this.$http.post('http://localhost:3000/posts', config);
-      this.getData();
+      this.data.push(config);
     },
     async deleteData(val) {
       await this.$http.delete(`http://localhost:3000/posts/${val}`);
-      this.getData();
+      this.data.splice(val - 1, 1);
     },
     async patchData(val) {
       const data = {};
-      const id = val[3];
+      const id = val.id;
       const url = `http://localhost:3000/posts/${id}`;
-      if (val[0] !== this.data[id - 1].author) {
-        data.author = val[0];
+      if (val.author !== this.data[id - 1].author) {
+        data.author = val.author;
       }
-      if (val[1] !== this.data[id - 1].title) {
-        data.title = val[1];
+      if (val.title !== this.data[id - 1].title) {
+        data.title = val.title;
       }
-      if (val[2] !== this.data[id - 1].content) {
-        data.content = val[2];
+      if (val.content !== this.data[id - 1].content) {
+        data.content = val.content;
       }
       if (data) {
         data.updateTime = this.setTimeStr();

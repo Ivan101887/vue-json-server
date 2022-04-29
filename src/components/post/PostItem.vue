@@ -15,11 +15,7 @@
           class="ctrlBar__item ctrlBar__item--active"
           @click="isModifying = true"
         >
-          <font-awesome-icon
-            class="icon"
-            icon="gear"
-            @click="isModifying = true"
-          />
+          <font-awesome-icon class="icon" icon="gear" />
         </button>
         <button class="ctrlBar__item" @click="$emit('delete', parentData.id)">
           <font-awesome-icon class="icon" icon="trash-can" />
@@ -35,15 +31,15 @@
     <form action="submit" class="form" v-else>
       <label for="author" class="label">
         作者:
-        <input type="text" v-model="author" name="author" class="input" />
+        <input type="text" v-model="obj.author" name="author" class="input" />
       </label>
       <label for="title" class="label">
         標題:
-        <input type="text" v-model="title" name="title" class="input" />
+        <input type="text" v-model="obj.title" name="title" class="input" />
       </label>
       <label for="content" class="label">
         內容:
-        <textarea type="text" v-model="content" name="content" class="input" />
+        <textarea type="text" v-model="obj.content" name="content" class="input" />
       </label>
     </form>
     <div class="postItem__foot">
@@ -83,31 +79,34 @@ export default {
     return {
       isModifying: false,
       isConfirm: false,
-      author: this.parentData.author,
-      title: this.parentData.title,
-      content: this.parentData.content,
+      obj: {
+        author: this.parentData.author,
+        title: this.parentData.title,
+        content: this.parentData.content,
+        id: this.parentData.id,
+      },
     };
   },
   methods: {
     clickConfirm() {
       this.isModifying = false;
-      this.$emit('update', [this.author, this.title, this.content, this.parentData.id]);
+      this.$emit('update', this.obj);
     },
   },
   watch: {
-    author(val) {
+    'obj.author': function (val) {
       if (val === this.parentData.author) {
         this.isConfirm = false;
       } else {
         this.isConfirm = true;
       }
     },
-    title(val) {
+    'obj.title': function (val) {
       if (val === this.parentData.title) {
         this.isConfirm = false;
       } else { this.isConfirm = true; }
     },
-    content(val) {
+    'obj.content': function (val) {
       if (val === this.parentData.content) {
         this.isConfirm = false;
       } else {
