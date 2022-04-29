@@ -1,7 +1,12 @@
 <template>
   <div class="container mx-auto">
     <ul class="post">
-      <PostItem v-for="item in parentData" :key="item.id" :parent-data="item" />
+      <PostItem
+        v-for="item in parentData"
+        :key="item.id"
+        :parent-data="item"
+        v-on="$listeners"
+      />
     </ul>
   </div>
 </template>
