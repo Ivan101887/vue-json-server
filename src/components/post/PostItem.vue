@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 /* eslint-disable vuejs-accessibility/label-has-for */
 <template>
   <li class="postItem">
@@ -39,7 +40,12 @@
       </label>
       <label for="content" class="label">
         內容:
-        <textarea type="text" v-model="obj.content" name="content" class="input" />
+        <textarea
+          type="text"
+          v-model="obj.content"
+          name="content"
+          class="input"
+        />
       </label>
     </form>
     <div class="postItem__foot">

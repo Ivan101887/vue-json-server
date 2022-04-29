@@ -31,5 +31,8 @@ export default {
       template-columns: repeat(3, 1fr);
       gap: 15px;
     }
+    margin: {
+      bottom: 10px;
+    }
   }
 </style>
