@@ -102,24 +102,17 @@ export default {
     },
   },
   watch: {
-    'obj.author': function (val) {
-      if (val === this.parentData.author) {
-        this.isConfirm = false;
-      } else {
-        this.isConfirm = true;
-      }
-    },
-    'obj.title': function (val) {
-      if (val === this.parentData.title) {
-        this.isConfirm = false;
-      } else { this.isConfirm = true; }
-    },
-    'obj.content': function (val) {
-      if (val === this.parentData.content) {
-        this.isConfirm = false;
-      } else {
-        this.isConfirm = true;
-      }
+    obj: {
+      handler(val) {
+        const strObj = JSON.stringify(val);
+        const strParent = JSON.stringify(this.parentData);
+        if (strObj === strParent) {
+          this.isConfirm = false;
+        } else {
+          this.isConfirm = true;
+        }
+      },
+      deep: true,
     },
   },
 };

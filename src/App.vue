@@ -1,31 +1,18 @@
-/* eslint-disable prefer-destructuring */
 <template>
   <div id="app">
-    <header class="header container mx-auto">
-      <button type="button" value="" class="addItem" @click="postItem">
-        <font-awesome-icon icon="plus" />
-      </button>
-      <label for="Searching">
-        <input
-          class="searching"
-          id="Searching"
-          type="text"
-          placeholder="全文搜尋"
-          v-model="keyWord"
-          @keyup="searchData"
-        />
-      </label>
-    </header>
+    <TheHeader @update="updateKeyWord" @clickAddItem="postItem" />
     <Post :parent-data="data" @delete="deleteData" @update="patchData" />
   </div>
 </template>
 
 <script>
+import _ from 'lodash';
 import Post from '@/components/post/Post.vue';
+import TheHeader from './components/TheHeader.vue';
 
 export default {
   name: 'App',
-  components: { Post },
+  components: { Post, TheHeader },
   data() {
     return {
       data: [],
@@ -34,6 +21,9 @@ export default {
   },
   created() {
     this.getData();
+  },
+  watch: {
+    keyWord: _.debounce(function () { this.getData(); }, 300),
   },
   methods: {
     async getData() {
@@ -44,12 +34,12 @@ export default {
         console.log(e);
       }
     },
-    searchData() {
-      setTimeout(() => this.getData(), 1000);
-    },
     setTimeStr() {
       const timeStr = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
       return timeStr;
+    },
+    updateKeyWord(val) {
+      this.keyWord = val;
     },
     async postItem() {
       const config = {
@@ -92,40 +82,3 @@ export default {
 
 };
 </script>
-<style lang="scss" scoped>
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: {
-      top: 12px;
-      bottom: 18px;
-    }
-  }
-  .addItem {
-    padding: 10px 18px;
-    background: {
-      color: #cabfe6;
-    }
-    border: 0;
-    border-radius: 3px;
-  }
-  .searching {
-    padding: 7.5px 15px;
-    font: {
-      size: 16px;
-    }
-    color: #fff;
-    background: {
-      color: rgba(221, 221, 221, 0.39);
-    }
-    border: {
-      width: 0;
-      radius: 3px;
-    }
-    outline: none;
-    &::placeholder {
-      color: rgba(255, 255, 255, 0.596);
-    }
-  }
-</style>
