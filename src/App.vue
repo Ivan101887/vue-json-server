@@ -1,12 +1,11 @@
 <template>
   <div id="app">
-    <TheHeader @update="updateKeyWord" @clickAddItem="postItem" />
+    <TheHeader @update="debounceSearch" @clickAddItem="postItem" />
     <Post :parent-data="data" @delete="deleteData" @update="patchData" />
   </div>
 </template>
 
 <script>
-import _ from 'lodash';
 import Post from '@/components/post/Post.vue';
 import TheHeader from './components/TheHeader.vue';
 
@@ -22,9 +21,6 @@ export default {
   created() {
     this.getData();
   },
-  watch: {
-    keyWord: _.debounce(function () { this.getData(); }, 300),
-  },
   methods: {
     async getData() {
       try {
@@ -38,8 +34,13 @@ export default {
       const timeStr = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()} ${new Date().getHours()}:${new Date().getMinutes()}:${new Date().getSeconds()}`;
       return timeStr;
     },
-    updateKeyWord(val) {
-      this.keyWord = val;
+    debounceSearch(val) {
+      let timeout = null;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        this.keyWord = val;
+        this.getData();
+      }, 1000);
     },
     async postItem() {
       const config = {

@@ -14,8 +14,8 @@
         id="Searching"
         type="text"
         placeholder="全文搜尋"
-        v-model="keyWord"
-        @keyup="$emit('update', keyWord)"
+        value=""
+        @keyup="$emit('update', $event.target.value)"
       />
     </label>
   </header>
@@ -24,11 +24,6 @@
 
 export default {
   name: 'the-header',
-  data() {
-    return {
-      keyWord: '',
-    };
-  },
 };
 </script>
 <style lang="scss" scoped>
