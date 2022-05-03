@@ -28,7 +28,7 @@ export default {
   .post {
     display: grid;
     grid: {
-      template-columns: repeat(3, 1fr);
+      template-columns: repeat(3, 33.3333%);
       gap: 15px;
     }
     margin: {

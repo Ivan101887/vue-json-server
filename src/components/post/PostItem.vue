@@ -149,6 +149,7 @@ export default {
         bottom: 8px;
       }
       padding: 15px 20px;
+      word-wrap: break-word;
     }
     &__foot {
       * {
