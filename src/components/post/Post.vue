@@ -2,11 +2,13 @@
   <div class="container mx-auto">
     <ul class="post">
       <PostItem
-        v-for="item in parentData"
+        v-for="(item, index) in parentData"
         :key="item.id"
         :parent-data="item"
+        :parent-index="index"
         v-on="$listeners"
       />
+      <!-- <li v-for="item in parentData" :key="item.id">{{item}}</li> -->
     </ul>
   </div>
 </template>

@@ -6,7 +6,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import Post from '@/components/post/Post.vue';
 import TheHeader from './components/TheHeader.vue';
 
@@ -23,9 +22,12 @@ export default {
     this.getData();
   },
   watch: {
-    keyWord: _.debounce(function () {
-      this.queryData();
-    }, 600),
+    keyWord() {
+      if (this.timeout) { clearTimeout(this.timeout); }
+      this.timeout = setTimeout(() => {
+        this.queryData();
+      }, 300);
+    },
   },
   methods: {
     async getData() {
@@ -61,36 +63,26 @@ export default {
         console.log(e);
       }
     },
-    async deleteData(val) {
+    async deleteData(index) {
       try {
-        await this.$http.delete(`http://localhost:3000/posts/${val}`);
-        this.data.splice(val - 1, 1);
+        const target = this.data[index];
+        const id = target.id;
+        await this.$http.delete(`http://localhost:3000/posts/${id}`);
+        this.data.splice(index, 1);
       } catch (e) {
         console.log(e);
       }
     },
-    async updateData(val) {
-      const data = {};
-      const id = val.id;
+    async updateData(obj, index) {
+      const target = this.data[index];
+      const id = target.id;
       const url = `http://localhost:3000/posts/${id}`;
-      if (val.author !== this.data[id - 1].author) {
-        data.author = val.author;
-      }
-      if (val.title !== this.data[id - 1].title) {
-        data.title = val.title;
-      }
-      if (val.content !== this.data[id - 1].content) {
-        data.content = val.content;
-      }
-      if (data) {
-        data.updateTime = Date.now();
-      }
       try {
-        const res = await this.$http.patch(url, data);
-        // this.data[id - 1] = res.data;
-        this.data.splice(id - 1, 1, res.data);
+        const res = await this.$http.put(url, obj);
+        // this.data[index] = res.data;
+        this.data.splice(index, 1, res.data);
       } catch (e) {
-        console.log(e.response);
+        console.log(e);
       }
     },
   },

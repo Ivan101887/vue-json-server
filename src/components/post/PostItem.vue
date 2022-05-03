@@ -11,12 +11,17 @@
       </div>
       <div class="ctrlBar" v-if="!isModifying">
         <button
+          type="button"
           class="ctrlBar__item ctrlBar__item--active"
           @click="isModifying = true"
         >
           <font-awesome-icon class="icon" icon="gear" />
         </button>
-        <button class="ctrlBar__item" @click="$emit('delete', parentData.id)">
+        <button
+          type="button"
+          class="ctrlBar__item"
+          @click="$emit('delete', parentIndex)"
+        >
           <font-awesome-icon class="icon" icon="trash-can" />
         </button>
       </div>
@@ -78,23 +83,26 @@ export default {
   name: 'post-item',
   props: {
     parentData: Object,
+    parentIndex: Number,
   },
   data() {
     return {
       isModifying: false,
       isConfirm: false,
       obj: {
+        id: this.parentData.id,
         author: this.parentData.author,
         title: this.parentData.title,
         content: this.parentData.content,
-        id: this.parentData.id,
+        updateTime: 0,
       },
     };
   },
   methods: {
     clickConfirm() {
+      this.obj.updateTime = Date.now();
       this.isModifying = false;
-      this.$emit('update', this.obj);
+      this.$emit('update', this.obj, this.parentIndex);
     },
     clickCancel() {
       this.obj = this.parentData;
