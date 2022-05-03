@@ -50,7 +50,7 @@
       <div>
         <font-awesome-icon icon="clock" />
       </div>
-      <p class="postItem__time">{{ parentData.updateTime }}</p>
+      <p class="postItem__time">{{ setTimeStr(parentData.updateTime) }}</p>
     </div>
     <div class="buttons" v-if="isModifying">
       <input
@@ -99,6 +99,13 @@ export default {
     clickCancel() {
       this.obj = this.parentData;
       this.isModifying = false;
+    },
+    setTimeStr(t) {
+      const timeStr = `
+        ${new Date(t).getFullYear()}-${new Date(t).getMonth() + 1}-${new Date(t).getDate()}
+        ${new Date(t).getHours()}:${new Date(t).getMinutes()}:${new Date(t).getSeconds()}
+      `;
+      return timeStr;
     },
   },
   watch: {
