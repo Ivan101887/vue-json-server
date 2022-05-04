@@ -39,8 +39,11 @@ export default {
       }
     },
     async queryData() {
+      const config = {
+        params: { q: this.keyWord },
+      };
       try {
-        const res = await this.$http.get(`http://localhost:3000/posts?q=${this.keyWord}`);
+        const res = await this.$http.get('http://localhost:3000/posts', config);
         this.data = res.data;
       } catch (e) {
         console.log(e);
@@ -79,7 +82,6 @@ export default {
       const url = `http://localhost:3000/posts/${id}`;
       try {
         const res = await this.$http.put(url, obj);
-        // this.data[index] = res.data;
         this.data.splice(index, 1, res.data);
       } catch (e) {
         console.log(e);

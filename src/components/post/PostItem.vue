@@ -90,7 +90,6 @@ export default {
       isModifying: false,
       isConfirm: false,
       obj: {
-        id: this.parentData.id,
         author: this.parentData.author,
         title: this.parentData.title,
         content: this.parentData.content,
